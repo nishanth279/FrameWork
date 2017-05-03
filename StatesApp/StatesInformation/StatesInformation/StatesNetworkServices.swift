@@ -11,7 +11,7 @@ import Foundation
 
 class StatesNetworkServices: NSObject {
     
-    class func fetchStatesList(urlString: String, completionHandler:@escaping (_ responseDate:AnyObject) -> Void) {
+    class func fetchStatesList(urlString: String, completionHandler:@escaping (_ responseDate:AnyObject?) -> Void) {
         
         if let url : URL = URL(string: urlString) {
             let request: NSMutableURLRequest = NSMutableURLRequest(url: url)
@@ -27,7 +27,7 @@ class StatesNetworkServices: NSObject {
                 do {
                     responseData = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
                     DispatchQueue.main.async {
-                        completionHandler(responseData!)
+                        completionHandler(responseData)
                     }
                 } catch {
                     print(error)

@@ -18,16 +18,19 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
+        
         self.tableView.register(UINib(nibName: "StatesListCell", bundle: Bundle(for: StatesListCell.self)), forCellReuseIdentifier: "statesListCell")
         
         let url = "http://services.groupkt.com/state/get/USA/all"
         StatesNetworkServices.fetchStatesList(urlString: url) { (responseData) in
-            let responseData = responseData as! NSDictionary
-            let response = responseData["RestResponse"] as! NSDictionary
-            let statesList = response["result"] as! NSArray
-            self.statesList = statesList
-            self.tableView.reloadData()
+            if let responseData = responseData as? NSDictionary {
+                if let response = responseData["RestResponse"] as? NSDictionary {
+                    if let statesList = response["result"] as? NSArray {
+                        self.statesList = statesList
+                        self.tableView.reloadData()
+                    }
+                }
+            }
         }
     }
     
@@ -86,5 +89,3 @@ extension String {
         return nil
     }
 }
-
-
